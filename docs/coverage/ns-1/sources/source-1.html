@@ -1,0 +1,207 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Main</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">&lt;empty package name&gt;</a>
+</div>
+
+<h1>Coverage Summary for Class: Main (&lt;empty package name&gt;)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Main</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/60)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;import beds.BedRepository;
+&nbsp;import facade.AdmissionAdminFacade;
+&nbsp;import facade.AdmissionFacade;
+&nbsp;import facade.ProgressRepository;
+&nbsp;import intake.RegistrationRepository;
+&nbsp;import orders.TreatmentRepository;
+&nbsp;import storage.FileStore;
+&nbsp;
+&nbsp;import java.nio.file.Path;
+&nbsp;import java.util.Scanner;
+&nbsp;
+<b class="nc">&nbsp;public class Main {</b>
+&nbsp;    public static void main(String[] args) {
+<b class="nc">&nbsp;        FileStore store = new FileStore(Path.of(&quot;data&quot;));</b>
+<b class="nc">&nbsp;        RegistrationRepository registrations = new RegistrationRepository(store);</b>
+<b class="nc">&nbsp;        BedRepository beds = new BedRepository(store);</b>
+<b class="nc">&nbsp;        TreatmentRepository orders = new TreatmentRepository(store);</b>
+<b class="nc">&nbsp;        ProgressRepository progress = new ProgressRepository(store);</b>
+<b class="nc">&nbsp;        AdmissionAdminFacade admin = new AdmissionAdminFacade(registrations, beds, orders, progress);</b>
+<b class="nc">&nbsp;        AdmissionFacade admission = new AdmissionFacade(registrations, beds, orders, progress, admin);</b>
+&nbsp;
+<b class="nc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+&nbsp;        while (true) {
+<b class="nc">&nbsp;            System.out.println(&quot;\n--- HOSPITAL ADMISSION ---&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;1. Full admission (A -&gt; B -&gt; C)&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;2. Register patient only (A)&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;3. Continue admission (B -&gt; C)&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;4. Inspect saved admission&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;5. Manually compensate admission&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;0. Exit&quot;);</b>
+<b class="nc">&nbsp;            System.out.print(&quot;Choose: &quot;);</b>
+<b class="nc">&nbsp;            String option = scanner.nextLine().trim();</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                if (option.equals(&quot;0&quot;)) {</b>
+&nbsp;                    return;
+<b class="nc">&nbsp;                } else if (option.equals(&quot;1&quot;) || option.equals(&quot;2&quot;)) {</b>
+<b class="nc">&nbsp;                    System.out.print(&quot;Admission ID: &quot;);</b>
+<b class="nc">&nbsp;                    String id = scanner.nextLine().trim();</b>
+<b class="nc">&nbsp;                    System.out.print(&quot;Patient name (English letters): &quot;);</b>
+<b class="nc">&nbsp;                    String name = scanner.nextLine().trim();</b>
+<b class="nc">&nbsp;                    boolean insured = askYesNo(scanner, &quot;Insurance valid&quot;);</b>
+<b class="nc">&nbsp;                    if (option.equals(&quot;2&quot;)) {</b>
+<b class="nc">&nbsp;                        System.out.println(admission.start(id, name, insured));</b>
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        System.out.print(&quot;Room number: &quot;);</b>
+<b class="nc">&nbsp;                        int room = Integer.parseInt(scanner.nextLine().trim());</b>
+<b class="nc">&nbsp;                        boolean bed = askYesNo(scanner, &quot;Bed available&quot;);</b>
+<b class="nc">&nbsp;                        boolean equipment = askYesNo(scanner, &quot;Equipment available&quot;);</b>
+<b class="nc">&nbsp;                        boolean lab = askYesNo(scanner, &quot;Lab ready&quot;);</b>
+<b class="nc">&nbsp;                        boolean pharmacy = askYesNo(scanner, &quot;Pharmacy ready&quot;);</b>
+<b class="nc">&nbsp;                        System.out.println(admission.admit(id, name, insured,</b>
+&nbsp;                                room, bed, equipment, lab, pharmacy));
+&nbsp;                    }
+<b class="nc">&nbsp;                } else if (option.equals(&quot;3&quot;)) {</b>
+<b class="nc">&nbsp;                    System.out.print(&quot;Admission ID: &quot;);</b>
+<b class="nc">&nbsp;                    String id = scanner.nextLine().trim();</b>
+<b class="nc">&nbsp;                    System.out.print(&quot;Room number: &quot;);</b>
+<b class="nc">&nbsp;                    int room = Integer.parseInt(scanner.nextLine().trim());</b>
+<b class="nc">&nbsp;                    boolean bed = askYesNo(scanner, &quot;Bed available&quot;);</b>
+<b class="nc">&nbsp;                    boolean equipment = askYesNo(scanner, &quot;Equipment available&quot;);</b>
+<b class="nc">&nbsp;                    boolean pause = askYesNo(scanner, &quot;Pause after stage B&quot;);</b>
+<b class="nc">&nbsp;                    boolean lab = true;</b>
+<b class="nc">&nbsp;                    boolean pharmacy = true;</b>
+<b class="nc">&nbsp;                    if (!pause) {</b>
+<b class="nc">&nbsp;                        lab = askYesNo(scanner, &quot;Lab ready&quot;);</b>
+<b class="nc">&nbsp;                        pharmacy = askYesNo(scanner, &quot;Pharmacy ready&quot;);</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    System.out.println(admission.continueAdmission(id, room,</b>
+&nbsp;                            bed, equipment, lab, pharmacy, pause));
+<b class="nc">&nbsp;                } else if (option.equals(&quot;4&quot;)) {</b>
+<b class="nc">&nbsp;                    System.out.print(&quot;Admission ID: &quot;);</b>
+<b class="nc">&nbsp;                    System.out.println(admin.inspect(scanner.nextLine().trim()));</b>
+<b class="nc">&nbsp;                } else if (option.equals(&quot;5&quot;)) {</b>
+<b class="nc">&nbsp;                    System.out.print(&quot;Admission ID: &quot;);</b>
+<b class="nc">&nbsp;                    String id = scanner.nextLine().trim();</b>
+<b class="nc">&nbsp;                    admin.compensate(id);</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Compensation complete: &quot; + id);</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    System.out.println(&quot;Unknown option.&quot;);</b>
+&nbsp;                }
+&nbsp;            } catch (IllegalArgumentException | IllegalStateException e) {
+<b class="nc">&nbsp;                System.out.println(&quot;Error: &quot; + e.getMessage());</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private static boolean askYesNo(Scanner scanner, String question) {
+<b class="nc">&nbsp;        System.out.print(question + &quot;? (y/n): &quot;);</b>
+<b class="nc">&nbsp;        return scanner.nextLine().trim().equalsIgnoreCase(&quot;y&quot;);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-10-17 21:57</div>
+</div>
+</body>
+</html>

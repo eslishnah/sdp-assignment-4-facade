@@ -1,0 +1,21 @@
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Compiled files
+out/
+build/
+target/
+*.class
+
+# Saved application data
+data/
+
+# Temporary files
+sources.tmp
+*.log
+
+# System files
+.DS_Store
+Thumbs.db

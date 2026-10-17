@@ -1,0 +1,203 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1536" height="1024" viewBox="0 0 1536 1024">
+  <defs>
+    <style>
+      .box { fill: white; stroke: black; stroke-width: 2; }
+      .panel { fill: none; stroke: black; stroke-width: 2; }
+      .txt { font-family: Arial, Helvetica, sans-serif; font-size: 14px; fill: black; }
+      .small { font-size: 12px; }
+      .title { font-size: 18px; font-weight: bold; }
+      .class { font-size: 16px; font-weight: bold; }
+      .center { text-anchor: middle; }
+      .left { text-anchor: start; }
+      .italic { font-style: italic; }
+      .dashed { stroke-dasharray: 8 6; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,3 L0,6 Z" fill="black" />
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1536" height="1024" fill="white" />
+
+  <!-- Main -->
+  <rect class="box" x="654" y="14" width="226" height="86" />
+  <line x1="654" y1="64" x2="880" y2="64" stroke="black" stroke-width="2" />
+  <text class="txt small center" x="767" y="34">«Client»</text>
+  <text class="txt class center" x="767" y="57">Main</text>
+  <text class="txt left" x="670" y="86">+main(args)</text>
+
+  <!-- Facades -->
+  <rect class="box" x="342" y="149" width="318" height="128" />
+  <line x1="342" y1="200" x2="660" y2="200" stroke="black" stroke-width="2" />
+  <text class="txt small center" x="501" y="169">«Facade»</text>
+  <text class="txt class center" x="501" y="192">AdmissionFacade</text>
+  <text class="txt left" x="357" y="220">+admit(...)</text>
+  <text class="txt left" x="357" y="245">+start(...)</text>
+  <text class="txt left" x="357" y="270">+continueAdmission(...)</text>
+
+  <rect class="box" x="879" y="149" width="318" height="128" />
+  <line x1="879" y1="200" x2="1197" y2="200" stroke="black" stroke-width="2" />
+  <text class="txt small center" x="1038" y="169">«Admin Facade»</text>
+  <text class="txt class center" x="1038" y="192">AdmissionAdminFacade</text>
+  <text class="txt left" x="894" y="220">+inspect(id)</text>
+  <text class="txt left" x="894" y="245">+compensate(id)</text>
+
+  <!-- Main arrows -->
+  <path d="M742 100 L742 123 L501 123 L501 147" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M792 100 L792 123 L1038 123 L1038 147" fill="none" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Facade dashed dependency -->
+  <line x1="660" y1="214" x2="879" y2="214" class="dashed" stroke="black" stroke-width="2" marker-end="url(#arrow)" />
+  <text class="txt center" x="769" y="204">uses for rollback</text>
+
+  <!-- Workflow bar -->
+  <rect class="box" x="26" y="301" width="1484" height="63" />
+  <text class="txt title left" x="48" y="325">Normal workflow</text>
+  <text class="txt left" x="48" y="351">A: register patient → B: allocate bed/equipment → C: confirm lab/pharmacy orders</text>
+  <text class="txt left" x="1297" y="336">Failure recovery: C → B → A</text>
+
+  <line x1="501" y1="277" x2="501" y2="300" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="1038" y1="277" x2="1038" y2="300" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Subsystem panels -->
+  <rect class="panel" x="30" y="399" width="462" height="391" rx="3" />
+  <text class="txt title left" x="48" y="423">Subsystem A — Registration</text>
+  <text class="txt small left" x="48" y="443">package intake</text>
+
+  <rect class="panel" x="545" y="399" width="462" height="391" rx="3" />
+  <text class="txt title left" x="563" y="423">Subsystem B — Bed Allocation</text>
+  <text class="txt small left" x="563" y="443">package beds</text>
+
+  <rect class="panel" x="1045" y="399" width="462" height="391" rx="3" />
+  <text class="txt title left" x="1063" y="423">Subsystem C — Final Orders</text>
+  <text class="txt small left" x="1063" y="443">package orders</text>
+
+  <!-- arrows from workflow -->
+  <line x1="268" y1="364" x2="268" y2="397" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="776" y1="364" x2="776" y2="397" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="1276" y1="364" x2="1276" y2="397" stroke="black" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Subsystem A classes -->
+  <rect class="box" x="45" y="465" width="214" height="97" />
+  <line x1="45" y1="517" x2="259" y2="517" stroke="black" stroke-width="2" />
+  <text class="txt small center" x="152" y="485">«Logic»</text>
+  <text class="txt class center" x="152" y="505">RegistrationDesk</text>
+  <text class="txt left" x="58" y="539">+check(id, name)</text>
+
+  <rect class="box" x="274" y="465" width="203" height="97" />
+  <line x1="274" y1="517" x2="477" y2="517" stroke="black" stroke-width="2" />
+  <text class="txt small center" x="376" y="485">«Logic»</text>
+  <text class="txt class center" x="376" y="505">InsuranceVerifier</text>
+  <text class="txt left" x="287" y="539">+verify(valid)</text>
+
+  <rect class="box" x="45" y="593" width="205" height="134" />
+  <line x1="45" y1="647" x2="250" y2="647" stroke="black" stroke-width="2" />
+  <line x1="45" y1="677" x2="250" y2="677" stroke="black" stroke-width="1.5" />
+  <text class="txt small center" x="147" y="613">«Entity»</text>
+  <text class="txt class center" x="147" y="635">Registration</text>
+  <text class="txt left" x="58" y="667">-status: Status</text>
+  <text class="txt left" x="58" y="695">+register()</text>
+  <text class="txt left" x="58" y="721">+cancel()</text>
+
+  <rect class="box" x="273" y="593" width="204" height="134" />
+  <line x1="273" y1="647" x2="477" y2="647" stroke="black" stroke-width="2" />
+  <text class="txt small center" x="375" y="613">«Repository»</text>
+  <text class="txt class center" x="375" y="635">RegistrationRepository</text>
+  <text class="txt left" x="286" y="668">+save(registration)</text>
+  <text class="txt left" x="286" y="694">+find(id)</text>
+  <line x1="273" y1="661" x2="252" y2="661" stroke="black" stroke-width="2" marker-end="url(#arrow)" />
+  <text class="txt class center" x="261" y="740" style="font-size:14px; font-weight:bold;">Independent subsystem</text>
+
+  <!-- Subsystem B classes -->
+  <rect class="box" x="560" y="465" width="214" height="97" />
+  <line x1="560" y1="517" x2="774" y2="517" stroke="black" stroke-width="2" />
+  <text class="txt small center" x="667" y="485">«Logic»</text>
+  <text class="txt class center" x="667" y="505">BedAllocator</text>
+  <text class="txt left" x="573" y="539">+check(room, available)</text>
+
+  <rect class="box" x="785" y="465" width="199" height="97" />
+  <line x1="785" y1="517" x2="984" y2="517" stroke="black" stroke-width="2" />
+  <text class="txt small center" x="885" y="485">«Logic»</text>
+  <text class="txt class center" x="885" y="505">EquipmentReserver</text>
+  <text class="txt left" x="798" y="539">+check(available)</text>
+
+  <rect class="box" x="560" y="593" width="205" height="134" />
+  <line x1="560" y1="647" x2="765" y2="647" stroke="black" stroke-width="2" />
+  <line x1="560" y1="677" x2="765" y2="677" stroke="black" stroke-width="1.5" />
+  <text class="txt small center" x="662" y="613">«Entity»</text>
+  <text class="txt class center" x="662" y="635">BedAssignment</text>
+  <text class="txt left" x="573" y="667">-status: Status</text>
+  <text class="txt left" x="573" y="695">+allocate()</text>
+  <text class="txt left" x="573" y="721">+release()</text>
+
+  <rect class="box" x="780" y="593" width="204" height="134" />
+  <line x1="780" y1="647" x2="984" y2="647" stroke="black" stroke-width="2" />
+  <text class="txt small center" x="882" y="613">«Repository»</text>
+  <text class="txt class center" x="882" y="635">BedRepository</text>
+  <text class="txt left" x="793" y="668">+save(bed)</text>
+  <text class="txt left" x="793" y="694">+find(id)</text>
+  <line x1="780" y1="661" x2="767" y2="661" stroke="black" stroke-width="2" marker-end="url(#arrow)" />
+  <text class="txt class center" x="776" y="740" style="font-size:14px; font-weight:bold;">Independent subsystem</text>
+
+  <!-- Subsystem C classes -->
+  <rect class="box" x="1062" y="465" width="210" height="97" />
+  <line x1="1062" y1="517" x2="1272" y2="517" stroke="black" stroke-width="2" />
+  <text class="txt small center" x="1167" y="485">«Logic»</text>
+  <text class="txt class center" x="1167" y="505">LabOrderSystem</text>
+  <text class="txt left" x="1075" y="539">+check(ready)</text>
+
+  <rect class="box" x="1282" y="465" width="213" height="97" />
+  <line x1="1282" y1="517" x2="1495" y2="517" stroke="black" stroke-width="2" />
+  <text class="txt small center" x="1388" y="485">«Logic»</text>
+  <text class="txt class center" x="1388" y="505">PharmacyDispatcher</text>
+  <text class="txt left" x="1295" y="539">+check(ready)</text>
+
+  <rect class="box" x="1062" y="593" width="205" height="134" />
+  <line x1="1062" y1="647" x2="1267" y2="647" stroke="black" stroke-width="2" />
+  <line x1="1062" y1="677" x2="1267" y2="677" stroke="black" stroke-width="1.5" />
+  <text class="txt small center" x="1164" y="613">«Entity»</text>
+  <text class="txt class center" x="1164" y="635">TreatmentOrders</text>
+  <text class="txt left" x="1075" y="667">-status: Status</text>
+  <text class="txt left" x="1075" y="695">+confirm()</text>
+  <text class="txt left" x="1075" y="721">+cancel()</text>
+
+  <rect class="box" x="1285" y="593" width="210" height="134" />
+  <line x1="1285" y1="647" x2="1495" y2="647" stroke="black" stroke-width="2" />
+  <text class="txt small center" x="1390" y="613">«Repository»</text>
+  <text class="txt class center" x="1390" y="635">TreatmentRepository</text>
+  <text class="txt left" x="1298" y="668">+save(orders)</text>
+  <text class="txt left" x="1298" y="694">+find(id)</text>
+  <line x1="1285" y1="661" x2="1269" y2="661" stroke="black" stroke-width="2" marker-end="url(#arrow)" />
+  <text class="txt class center" x="1276" y="740" style="font-size:14px; font-weight:bold;">Independent subsystem</text>
+
+  <!-- bottom shared section -->
+  <rect class="panel" x="30" y="827" width="1465" height="186" />
+  <text class="txt title left" x="48" y="851">Shared persistence and admission progress</text>
+
+  <line x1="268" y1="790" x2="268" y2="827" class="dashed" stroke="black" stroke-width="2" />
+  <line x1="776" y1="790" x2="776" y2="827" class="dashed" stroke="black" stroke-width="2" />
+  <line x1="1400" y1="790" x2="1400" y2="827" class="dashed" stroke="black" stroke-width="2" />
+
+  <rect class="box" x="132" y="873" width="324" height="122" />
+  <line x1="132" y1="919" x2="456" y2="919" stroke="black" stroke-width="2" />
+  <text class="txt small center" x="294" y="893">«Storage»</text>
+  <text class="txt class center" x="294" y="909">FileStore</text>
+  <text class="txt left" x="148" y="944">+save(section, id, text)</text>
+  <text class="txt left" x="148" y="972">+read(section, id)</text>
+
+  <rect class="box" x="621" y="873" width="272" height="122" />
+  <line x1="621" y1="919" x2="893" y2="919" stroke="black" stroke-width="2" />
+  <text class="txt small center" x="757" y="893">«Repository»</text>
+  <text class="txt class center" x="757" y="909">ProgressRepository</text>
+  <text class="txt left" x="637" y="944">+save(progress)</text>
+  <text class="txt left" x="637" y="972">+find(id)</text>
+
+  <rect class="box" x="1037" y="873" width="368" height="122" />
+  <line x1="1037" y1="919" x2="1405" y2="919" stroke="black" stroke-width="2" />
+  <line x1="1037" y1="945" x2="1405" y2="945" stroke="black" stroke-width="1.5" />
+  <text class="txt small center" x="1221" y="893">«Entity»</text>
+  <text class="txt class center" x="1221" y="909">AdmissionProgress</text>
+  <text class="txt left" x="1054" y="939">-status: Status</text>
+  <text class="txt left" x="1054" y="968">+nextStage()</text>
+  <text class="txt left" x="1054" y="992">+complete()</text>
+</svg>

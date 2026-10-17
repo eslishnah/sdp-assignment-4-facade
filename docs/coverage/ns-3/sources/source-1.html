@@ -1,0 +1,186 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > AdmissionAdminFacade</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">facade</a>
+</div>
+
+<h1>Coverage Summary for Class: AdmissionAdminFacade (facade)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AdmissionAdminFacade</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    80,8%
+  </span>
+  <span class="absValue">
+    (21/26)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (37/37)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package facade;
+&nbsp;
+&nbsp;import beds.BedAssignment;
+&nbsp;import beds.BedRepository;
+&nbsp;import intake.Registration;
+&nbsp;import intake.RegistrationRepository;
+&nbsp;import orders.TreatmentOrders;
+&nbsp;import orders.TreatmentRepository;
+&nbsp;
+&nbsp;public class AdmissionAdminFacade {
+&nbsp;    private final RegistrationRepository registrations;
+&nbsp;    private final BedRepository beds;
+&nbsp;    private final TreatmentRepository orders;
+&nbsp;    private final ProgressRepository progressStore;
+&nbsp;
+&nbsp;    public AdmissionAdminFacade(RegistrationRepository registrations, BedRepository beds,
+<b class="fc">&nbsp;                                TreatmentRepository orders, ProgressRepository progressStore) {</b>
+<b class="fc">&nbsp;        this.registrations = registrations;</b>
+<b class="fc">&nbsp;        this.beds = beds;</b>
+<b class="fc">&nbsp;        this.orders = orders;</b>
+<b class="fc">&nbsp;        this.progressStore = progressStore;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String inspect(String id) {
+<b class="fc">&nbsp;        AdmissionProgress progress = progressStore.find(id);</b>
+<b class="fc">&nbsp;        if (progress == null) {</b>
+<b class="fc">&nbsp;            return &quot;Admission not found: &quot; + id;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        Registration registration = registrations.find(id);</b>
+<b class="fc">&nbsp;        BedAssignment bed = beds.find(id);</b>
+<b class="fc">&nbsp;        TreatmentOrders treatment = orders.find(id);</b>
+<b class="fc">&nbsp;        return &quot;ID: &quot; + id</b>
+<b class="fc">&nbsp;                + &quot;\nProgress: &quot; + progress.getStatus()</b>
+<b class="pc">&nbsp;                + &quot;\nRegistration: &quot; + (registration == null ? &quot;NONE&quot; : registration.getStatus())</b>
+<b class="fc">&nbsp;                + &quot;\nBed: &quot; + (bed == null ? &quot;NONE&quot; : bed.getStatus() + &quot; (room &quot; + bed.getRoomNumber() + &quot;)&quot;)</b>
+<b class="fc">&nbsp;                + &quot;\nTreatment orders: &quot; + (treatment == null ? &quot;NONE&quot; : treatment.getStatus());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void compensate(String id) {
+<b class="fc">&nbsp;        AdmissionProgress progress = progressStore.find(id);</b>
+<b class="fc">&nbsp;        if (progress == null) {</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;Admission does not exist.&quot;);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (progress.getStatus() == AdmissionProgress.Status.COMPENSATED) {</b>
+&nbsp;            return;
+&nbsp;        }
+<b class="fc">&nbsp;        if (progress.getStatus() != AdmissionProgress.Status.COMPENSATING) {</b>
+<b class="fc">&nbsp;            progress.startCompensation();</b>
+<b class="fc">&nbsp;            progressStore.save(progress);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        TreatmentOrders treatment = orders.find(id);</b>
+<b class="pc">&nbsp;        if (treatment != null &amp;&amp; treatment.getStatus() == TreatmentOrders.Status.CONFIRMED) {</b>
+<b class="fc">&nbsp;            treatment.cancel();</b>
+<b class="fc">&nbsp;            orders.save(treatment);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        BedAssignment bed = beds.find(id);</b>
+<b class="pc">&nbsp;        if (bed != null &amp;&amp; bed.getStatus() == BedAssignment.Status.ALLOCATED) {</b>
+<b class="fc">&nbsp;            bed.release();</b>
+<b class="fc">&nbsp;            beds.save(bed);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        Registration registration = registrations.find(id);</b>
+<b class="pc">&nbsp;        if (registration != null &amp;&amp; registration.getStatus() == Registration.Status.REGISTERED) {</b>
+<b class="fc">&nbsp;            registration.cancel();</b>
+<b class="fc">&nbsp;            registrations.save(registration);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        progress.finishCompensation();</b>
+<b class="fc">&nbsp;        progressStore.save(progress);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2026-10-17 21:57</div>
+</div>
+</body>
+</html>
